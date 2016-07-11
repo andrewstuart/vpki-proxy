@@ -51,7 +51,7 @@ func main() {
 		log.Println("Using cache file", cfg.CacheFile)
 		m.CacheFile(cfg.CacheFile)
 	}
-	if cfg.Email != "" {
+	if cfg.Email != "" && !m.Registered() {
 		err := m.Register(cfg.Email, nil)
 		if err != nil {
 			log.Printf("Error registering: %s", err)
