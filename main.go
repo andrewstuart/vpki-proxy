@@ -17,7 +17,7 @@ import (
 func redirectHTTP() {
 	m := http.NewServeMux()
 	m.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "https://"+r.Host+"/"+r.URL.String(), http.StatusFound)
+		http.Redirect(w, r, "https://"+r.Host+r.URL.String(), http.StatusFound)
 	})
 	log.Fatal(http.ListenAndServe(*httpPort, m))
 }
