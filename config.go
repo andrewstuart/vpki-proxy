@@ -85,10 +85,10 @@ func (cfg *config) init() error {
 			if _, ok := cfg.m[c.Hostname]; !ok {
 				cfg.m[c.Hostname] = []endpoint{}
 			}
-			cfg.m[c.Hostname] = append(cfg.m[c.Hostname], c)
 		case c.Directory != "":
 			c.rp = http.FileServer(http.Dir(c.Directory))
 		}
+		cfg.m[c.Hostname] = append(cfg.m[c.Hostname], c)
 	}
 
 	return nil

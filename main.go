@@ -33,11 +33,13 @@ func init() {
 }
 
 func main() {
-	if len(os.Args) < 2 {
-		log.Fatalf("Usage: %s <config-file>", os.Args[0])
+	if len(flag.Args()) < 1 {
+		flag.Usage()
+		os.Exit(1)
+		return
 	}
 
-	cfg, err := readConfig(os.Args[1])
+	cfg, err := readConfig(flag.Args()[0])
 	if err != nil {
 		log.Fatal(err)
 	}
