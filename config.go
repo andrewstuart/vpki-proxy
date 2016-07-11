@@ -34,7 +34,7 @@ var (
 )
 
 func init() {
-	prometheus.MustRegisterAll(routeMiss, routeHit)
+	prometheus.MustRegister(routeMiss, routeHit)
 }
 
 type endpoint struct {
