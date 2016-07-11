@@ -1,0 +1,16 @@
+email: andrew.stuart2@gmail.com
+cacheFile: le.cache
+useHSTS: true
+endpoints:
+  - hostname: go.astuart.co
+    backend: &go http://localhost:2313
+    q:
+      go-get: 1
+  - hostname: astuart.co
+    backend: *go
+    q:
+      go-get: 1
+  - hostname: www.astuart.co
+    directory: /www/astuart.co
+  - hostname: "*"
+    backend: http://localhost:8811
