@@ -58,10 +58,14 @@ func main() {
 		}
 	}
 
-	http.Handle("/", prometheus.InstrumentHandler("proxy", cfg))
+	var h http.Handler
 
-	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
-		if *metricIP != "" {
+	mux := http.NewServeMux()
+	mux.Handle("/", cfg)
+	h = mux
+
+	if *metricIP != "" {
+		mux.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
 			ra := strings.Split(r.RemoteAddr, ":")
 			if len(ra) < 2 {
 				log.Println("Unexpected remote address without port")
@@ -72,11 +76,13 @@ func main() {
 				http.Error(w, "Forbidden", http.StatusForbidden)
 				return
 			}
-		}
 
-		prometheus.Handler().ServeHTTP(w, r)
-	})
+			prometheus.Handler().ServeHTTP(w, r)
+		})
+
+		h = prometheus.InstrumentHandler("proxy", mux)
+	}
 
 	go redirectHTTP()
-	log.Fatal(vpki.ListenAndServeTLS(*httpsPort, nil, &m))
+	log.Fatal(vpki.ListenAndServeTLS(*httpsPort, h, &m))
 }
