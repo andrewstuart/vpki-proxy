@@ -83,5 +83,5 @@ func main() {
 	mux.Handle("/", h)
 
 	go redirectHTTP()
-	log.Fatal(vpki.ListenAndServeTLS(*httpsPort, h, &m))
+	log.Fatal(vpki.ListenAndServeTLS(*httpsPort, mux, &m))
 }

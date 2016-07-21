@@ -17,7 +17,7 @@ flexibility.
 go get -u astuart.co/vpki-proxy
 ```
 
-See [example config](blob/master/config-example.yml) for an example
+See [example config](config-example.yml) for an example
 configuration.
 
 ## Usage
