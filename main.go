@@ -58,11 +58,8 @@ func main() {
 		}
 	}
 
-	var h http.Handler
-
+	var h http.Handler = cfg
 	mux := http.NewServeMux()
-	mux.Handle("/", cfg)
-	h = mux
 
 	if *metricIP != "" {
 		mux.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
@@ -80,8 +77,10 @@ func main() {
 			prometheus.Handler().ServeHTTP(w, r)
 		})
 
-		h = prometheus.InstrumentHandler("proxy", mux)
+		h = prometheus.InstrumentHandler("proxy", cfg)
 	}
+
+	mux.Handle("/", h)
 
 	go redirectHTTP()
 	log.Fatal(vpki.ListenAndServeTLS(*httpsPort, h, &m))
